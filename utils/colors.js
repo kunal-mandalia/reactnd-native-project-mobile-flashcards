@@ -1,0 +1,5 @@
+export const white = '#fff'
+export const lightGrey = 'rgb(250, 251, 252)'
+export const darkGrey = '#959595'
+export const black = '#000'
+export const purple = 'purple'
