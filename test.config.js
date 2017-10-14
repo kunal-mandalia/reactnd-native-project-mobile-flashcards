@@ -2,7 +2,11 @@ import { JSDOM } from 'jsdom';
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-const setup = () => {
+/**
+ * Setup required for being able to mount
+ *  components as native isn't DOM based
+ */
+const setup = (() => {
   configure({ adapter: new Adapter() })
   const jsdom = new JSDOM('<!doctype html><html><body></body></html>')
   const { window } = jsdom
@@ -20,8 +24,13 @@ const setup = () => {
     userAgent: 'node.js',
   };
   copyProps(window, global)
-}
+})()
 
+/**
+ * As a workaround to the console errors shown
+ *  when mounting components, they can be silenced with
+ *  silenceConsoleError(true)
+ */
 const silenceConsoleError = (() => {
   const on = global.console.error
   const off = jest.fn()

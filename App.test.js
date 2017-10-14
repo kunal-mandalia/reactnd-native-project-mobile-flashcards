@@ -4,7 +4,6 @@ import renderer from 'react-test-renderer';
 import { shallow, mount, render } from 'enzyme'
 import { View } from 'react-native'
 import { setup, silenceConsoleError } from './test.config.js'
-setup()
 
 describe(`App`, () => {
   it('renders without crashing', () => {
