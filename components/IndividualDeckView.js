@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { View, Text } from 'react-native'
-import CoreLayout from './CoreLayout'
-import Button from './Button'
-import Space from './Space'
-import Title from './Title'
+import CoreLayout from './Common/CoreLayout'
+import Button from './Common/Button'
+import Space from './Common/Space'
+import Title from './Common/Title'
 
 const IndividualDeckView = ({ navigation }) => {
   const { deck } = navigation.state.params

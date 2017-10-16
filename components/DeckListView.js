@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
 import { white, lightGrey, darkGrey, black } from '../utils/colors'
 
 const DeckListView = ({ navigation, decks }) => {
@@ -31,12 +31,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     padding: 20,
-    marginTop: 6,
-    marginLeft: 8,
-    marginRight: 8,
     borderColor: darkGrey,
     borderRadius: 4,
-    borderWidth: 2,
+    borderWidth: 1,
   },
   button: {
     alignItems: 'center',    
