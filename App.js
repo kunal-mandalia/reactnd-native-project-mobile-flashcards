@@ -10,6 +10,9 @@ import NewDeckView from './components/NewDeckView'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { white, purple } from './utils/colors'
 
+import { Provider } from 'react-redux'
+import store from './redux/store'
+
 const Tabs = TabNavigator({
   DeckListView: {
     screen: DeckListView,
@@ -69,7 +72,9 @@ export default class App extends React.Component {
 
   render() {
     return (
+      <Provider store={store}>
         <Stack />
+      </Provider>
     );
   }
 }

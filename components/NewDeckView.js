@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { CoreLayout, InputText, Button } from './Common'
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native'
+import { connect } from 'react-redux'
+import { createDeckRequest } from '../redux/actions'
 
 class NewDeckView extends Component {
   state = {
@@ -13,6 +15,7 @@ class NewDeckView extends Component {
 
   onSubmit = () => {
     // update redux (update db from redux using then)
+    this.props.createDeck(this.state.name)
     console.log('NewDeckView: Submit', this.state.name)
   }
   
@@ -34,4 +37,9 @@ class NewDeckView extends Component {
   }
 }
 
-export default NewDeckView
+const mapStateToProps = state => ({})
+const mapDispatchToProps = dispatch => ({
+  createDeck: (title) => { dispatch(createDeckRequest(title)) }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewDeckView)
