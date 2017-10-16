@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { white, purple } from '../utils/colors'
+import { white, purple } from '../../utils/colors'
 
 const Button = ({ title, onPress, color }) => (
   <TouchableOpacity style={styles.container} onPress={onPress}>
