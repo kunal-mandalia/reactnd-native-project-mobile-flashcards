@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      
+      {
+        "type": "chrome",
+        "request": "launch",
+        "name": "Launch Chrome",
+        "url": "http://localhost:8080",
+        "webRoot": "${workspaceRoot}"
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Launch Tests",
+        "program": "${workspaceRoot}/node_modules/.bin/jest",
+        "args": [
+            "--runInBand",
+            "--no-cache"
+        ],
+        "runtimeArgs": [
+            "--debug-brk=127.0.0.1:5858"
+        ],
+        "port": 5858
+      }
+    ]
+  }

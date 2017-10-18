@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { CoreLayout, InputText, Button } from './Common'
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native'
 import { connect } from 'react-redux'
-import { createDeckRequest } from '../redux/actions'
+import { createDeck } from '../redux/actions.js'
 
 class NewDeckView extends Component {
   state = {
@@ -23,15 +23,15 @@ class NewDeckView extends Component {
     const { name } = this.props
     return (
       <CoreLayout>
-          <InputText
-            placeholder='Deck name'
-            value={name}
-            onChangeText={this.onChangeText}
-          />
-          <Button
-            title='Create'
-            onPress={this.onSubmit}
-          />
+        <InputText
+          placeholder='Deck name'
+          value={name}
+          onChangeText={this.onChangeText}
+        />
+        <Button
+          title='Create'
+          onPress={this.onSubmit}
+        />
       </CoreLayout>
     )
   }
@@ -39,7 +39,7 @@ class NewDeckView extends Component {
 
 const mapStateToProps = state => ({})
 const mapDispatchToProps = dispatch => ({
-  createDeck: (title) => { dispatch(createDeckRequest(title)) }
+  createDeck: (title) => { dispatch(createDeck(title)) }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewDeckView)
