@@ -25,6 +25,7 @@
     "expo": "^21.0.0",
     "jsdom": "11.3.0",
     "jsdom-global": "3.0.2",
+    "mock-promise-thunk": "0.3.1",
     "react": "16.0.0-alpha.12",
     "react-dom": "16.0.0-alpha.12",
     "react-native": "^0.48.4",
