@@ -37,7 +37,30 @@ export const saveDeckTitle = (title, storage = AsyncStorage) => {
   }
 }
 
-    // storage.getItem(c.ASYNC_STORAGE_DECKS_KEY)
-    //   .then(data => {
-    //     console.log('data key', data)
-    //   })
+export const addCardToDeckRequest = (title, card) => ({ type: c.ADD_CARD_TO_DECK_REQUEST, title, card })
+export const addCardToDeckSuccess = (title, card) => ({ type: c.ADD_CARD_TO_DECK_SUCCESS, title, card })
+export const addCardToDeckError = (error) => ({ type: c.ADD_CARD_TO_DECK_ERROR, error })
+export const addCardToDeck = (title, card, storage = AsyncStorage) => {
+  return (dispatch) => {
+    dispatch(addCardToDeckRequest(title, card))
+    storage.getItem(c.ASYNC_STORAGE_DECKS_KEY)
+    .then((decks) => {
+      const allDecks = JSON.parse(decks)
+      const cards = {
+        [title]: [allDecks[title], card],
+        titles: [allDecks[title].titles, card.title]
+      }
+      storage.mergeItem(c.ASYNC_STORAGE_DECKS_KEY, JSON.stringify({ [title]: cards }))
+      .then((response) => {
+        const { title, card } = response
+        dispatch(addCardToDeckSuccess(title, card))
+      })
+      .catch((error) => {
+        dispatch(addCardToDeckError(error))
+      })
+    })
+    .catch((error) => {
+      dispatch(addCardToDeckError(error))
+    })
+  }
+}

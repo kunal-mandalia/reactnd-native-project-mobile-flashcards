@@ -55,4 +55,48 @@ describe(`actions`, () => {
       expect(mockDispatch.mock.calls.length).toEqual(2)
     })
   })
+
+  describe(`addCardToDeck`, () => {
+    const card = {
+      title: 'Magic',
+      questions: [
+        {
+          question: 'Did David Blane levitate?',
+          answer: 'Of course'
+        }
+      ]
+    }
+    const decks = { [card.title]: card, titles: [card.title] }
+
+    it(`should dispatch request and success actions on resolve`, () => {
+      const getItemStack = [{ response: JSON.stringify(decks) }]
+      const mergeItemStack = [{ response: { title: card.title, card } }]
+
+      const mockPromiseLib = {
+        getItem: mockPromise(getItemStack),
+        mergeItem: mockPromise(mergeItemStack),
+      }
+      actions.addCardToDeck(card.title, card, mockPromiseLib)(mockDispatch)
+
+      expect(mockDispatch.mock.calls[0][0]).toEqual(actions.addCardToDeckRequest(card.title, card))
+      expect(mockDispatch.mock.calls[1][0]).toEqual(actions.addCardToDeckSuccess(card.title, card))
+      expect(mockDispatch.mock.calls.length).toEqual(2)
+    })
+
+    it(`should dispatch request and error actions on reject`, () => {
+      const error = 'Bad request'
+      const getItemStack = [{ response: JSON.stringify(decks) }]
+      const mergeItemStack = [{ error }]
+
+      const mockPromiseLib = {
+        getItem: mockPromise(getItemStack),
+        mergeItem: mockPromise(mergeItemStack),
+      }
+      actions.addCardToDeck(card.title, card, mockPromiseLib)(mockDispatch)
+
+      expect(mockDispatch.mock.calls[0][0]).toEqual(actions.addCardToDeckRequest(card.title, card))
+      expect(mockDispatch.mock.calls[1][0]).toEqual(actions.addCardToDeckError(error))
+      expect(mockDispatch.mock.calls.length).toEqual(2)
+    })
+  })
 })
