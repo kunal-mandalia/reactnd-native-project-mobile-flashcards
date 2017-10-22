@@ -1,23 +1,35 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
 import { white, lightGrey, darkGrey, black } from '../utils/colors'
+import { connect } from 'react-redux'
+import { getDecks } from '../redux/actions'
 
-const DeckListView = ({ navigation, decks }) => {
-  return (
-    <View style={styles.container}>
-      {Object.keys(decks).map((title, i, titles) => (
-        <View key={title} style={styles.card}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate('IndividualDeckView', { deck: decks[title] })}
-          >
-            <Text style={styles.title}>{title}</Text>
-            <Text>{titles.length} cards</Text>
-          </TouchableOpacity>          
-        </View>
-      ))}
-    </View>
-  )
+class DeckListView extends Component {
+  componentDidMount () {
+    const { loading, loaded, error } = this.props.status
+    if (!loading && !loaded) {
+      this.props.getDecks()
+    }
+  }
+  
+  render () {
+    const { decks, status, navigation } = this.props
+    return (
+      <View style={styles.container}>
+        {Object.keys(decks).map((title, i, titles) => (
+          <View key={title} style={styles.card}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate('IndividualDeckView', { deck: decks[title] })}
+            >
+              <Text style={styles.title}>{title}</Text>
+              <Text>{titles.length} cards</Text>
+            </TouchableOpacity>          
+          </View>
+        ))}
+      </View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
@@ -43,31 +55,40 @@ const styles = StyleSheet.create({
   }
 })
 
-DeckListView.defaultProps = {
-  decks: {
-    React: {
-      title: 'React',
-      questions: [
-        {
-          question: 'What is React?',
-          answer: 'A library for managing user interfaces'
-        },
-        {
-          question: 'Where do you make Ajax requests in React?',
-          answer: 'The componentDidMount lifecycle event'
-        }
-      ]
-    },
-    JavaScript: {
-      title: 'JavaScript',
-      questions: [
-        {
-          question: 'What is a closure?',
-          answer: 'The combination of a function and the lexical environment within which that function was declared.'
-        }
-      ]
-    }
-  }
-}
+// DeckListView.defaultProps = {
+//   decks: {
+//     React: {
+//       title: 'React',
+//       questions: [
+//         {
+//           question: 'What is React?',
+//           answer: 'A library for managing user interfaces'
+//         },
+//         {
+//           question: 'Where do you make Ajax requests in React?',
+//           answer: 'The componentDidMount lifecycle event'
+//         }
+//       ]
+//     },
+//     JavaScript: {
+//       title: 'JavaScript',
+//       questions: [
+//         {
+//           question: 'What is a closure?',
+//           answer: 'The combination of a function and the lexical environment within which that function was declared.'
+//         }
+//       ]
+//     }
+//   }
+// }
+const mapStateToProps = (state, ownProps) => ({
+  decks: state.decks,
+  status: state.status,
+  navigation: ownProps.navigation
+})
 
-export default DeckListView
+const mapDispatchToProps = dispatch => ({
+  getDecks: () => { dispatch(getDecks()) }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeckListView)

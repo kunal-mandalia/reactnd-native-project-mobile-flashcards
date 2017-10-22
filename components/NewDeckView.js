@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { CoreLayout, InputText, Button } from './Common'
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native'
 import { connect } from 'react-redux'
-import { createDeckRequest } from '../redux/actions'
+import { saveDeckTitle } from '../redux/actions.js'
 
 class NewDeckView extends Component {
   state = {
@@ -15,31 +15,33 @@ class NewDeckView extends Component {
 
   onSubmit = () => {
     // update redux (update db from redux using then)
-    this.props.createDeck(this.state.name)
-    console.log('NewDeckView: Submit', this.state.name)
+    this.props.saveDeckTitle(this.state.name)
   }
   
   render () {
     const { name } = this.props
     return (
       <CoreLayout>
-          <InputText
-            placeholder='Deck name'
-            value={name}
-            onChangeText={this.onChangeText}
-          />
-          <Button
-            title='Create'
-            onPress={this.onSubmit}
-          />
+        <InputText
+          placeholder='Deck name'
+          value={name}
+          onChangeText={this.onChangeText}
+        />
+        <Button
+          title='Create'
+          onPress={this.onSubmit}
+        />
       </CoreLayout>
     )
   }
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+  decks: state
+})
+
 const mapDispatchToProps = dispatch => ({
-  createDeck: (title) => { dispatch(createDeckRequest(title)) }
+  saveDeckTitle: (title) => { dispatch(saveDeckTitle(title)) }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewDeckView)

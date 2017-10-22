@@ -5,7 +5,8 @@
   "devDependencies": {
     "jest-expo": "^21.0.2",
     "react-native-scripts": "1.5.0",
-    "react-test-renderer": "16.0.0-alpha.12"
+    "react-test-renderer": "16.0.0-alpha.12",
+    "redux-mock-store": "1.3.0"
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
@@ -25,6 +26,7 @@
     "expo": "^21.0.0",
     "jsdom": "11.3.0",
     "jsdom-global": "3.0.2",
+    "mock-promise-thunk": "0.3.1",
     "react": "16.0.0-alpha.12",
     "react-dom": "16.0.0-alpha.12",
     "react-native": "^0.48.4",
