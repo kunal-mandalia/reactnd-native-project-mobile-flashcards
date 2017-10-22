@@ -1,6 +1,7 @@
 import * as actions from './actions'
 import * as c from './constants'
 import { mockPromise } from 'mock-promise-thunk'
+import { sampleData } from '../utils/helper'
 
 describe(`actions`, () => {
   const mockDispatch = jest.fn()
@@ -20,8 +21,8 @@ describe(`actions`, () => {
 
   describe(`getDecks`, () => {
     it(`should dispatch request and success actions on resolve`, () => {
-      const decks = { 'History': { title: 'History' }}
-      const actionStack = [{ response: decks }]
+      const decks = sampleData.decks
+      const actionStack = [{ response: JSON.stringify(decks) }]
       const mockPromiseLib = { getItem: mockPromise(actionStack) }
       actions.getDecks(mockPromiseLib)(mockDispatch)
 

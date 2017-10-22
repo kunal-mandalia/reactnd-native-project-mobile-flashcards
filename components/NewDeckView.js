@@ -16,7 +16,6 @@ class NewDeckView extends Component {
   onSubmit = () => {
     // update redux (update db from redux using then)
     this.props.saveDeckTitle(this.state.name)
-    console.log('NewDeckView: Submit', this.state.name)
   }
   
   render () {
@@ -37,7 +36,10 @@ class NewDeckView extends Component {
   }
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+  decks: state
+})
+
 const mapDispatchToProps = dispatch => ({
   saveDeckTitle: (title) => { dispatch(saveDeckTitle(title)) }
 })

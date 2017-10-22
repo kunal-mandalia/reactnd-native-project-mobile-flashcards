@@ -12,8 +12,8 @@ export const getDecks = (storage = AsyncStorage) => {
   return (dispatch) => {
     dispatch(getDecksRequest())
     storage.getItem(c.ASYNC_STORAGE_DECKS_KEY)
-    .then((response) => {
-      dispatch(getDecksSuccess(response))
+    .then((decks) => {
+      dispatch(getDecksSuccess(JSON.parse(decks)))
     })
     .catch((error) => {
       dispatch(getDecksError(error))
