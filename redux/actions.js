@@ -46,11 +46,11 @@ export const addCardToDeck = (title, card, storage = AsyncStorage) => {
     storage.getItem(c.ASYNC_STORAGE_DECKS_KEY)
     .then((decks) => {
       const allDecks = JSON.parse(decks)
-      const cards = {
-        [title]: [allDecks[title], card],
-        titles: [allDecks[title].titles, card.title]
+      const deckCards = {
+        title,
+        questions: allDecks[title].questions.concat(card)
       }
-      storage.mergeItem(c.ASYNC_STORAGE_DECKS_KEY, JSON.stringify({ [title]: cards }))
+      storage.mergeItem(c.ASYNC_STORAGE_DECKS_KEY, JSON.stringify({ [title]: deckCards }))
       .then((response) => {
         const { title, card } = response
         dispatch(addCardToDeckSuccess(title, card))
