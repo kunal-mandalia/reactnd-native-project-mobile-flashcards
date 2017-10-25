@@ -23,7 +23,7 @@ class DeckListView extends Component {
               onPress={() => navigation.navigate('IndividualDeckView', { deck: decks[title] })}
             >
               <Text style={styles.title}>{title}</Text>
-              <Text>{titles.length} cards</Text>
+              <Text>{decks[title] && decks[title].questions ? decks[title].questions.length : ' - '} cards</Text>
             </TouchableOpacity>          
           </View>
         ))}
