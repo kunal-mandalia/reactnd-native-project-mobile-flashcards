@@ -25,6 +25,21 @@ const reducer = (state = initialState, action = { type: null }) => {
         decks: action.value,
         status: success
       }
+    case c.ADD_CARD_TO_DECK_SUCCESS:
+      return {
+        ...state,
+        decks: {
+          ...state.decks,
+          [action.title]: {
+            ...state.decks[action.title],
+            questions: state.decks[action.title] ? [
+              ...state.decks[action.title].questions || '',
+              action.card
+            ] : [action.card]
+          },
+        },
+        status: success
+      }
     default:
       return state
   }
