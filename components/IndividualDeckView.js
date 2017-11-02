@@ -17,7 +17,7 @@ const IndividualDeckView = ({ navigation }) => {
       <Space />
       <Button
         title='Start Quiz'
-        onPress={() => { navigation.navigate('QuizView', { deckTitle: deck.title })}}
+        onPress={() => { navigation.navigate('QuizView', { deck })}}
       />
     </CoreLayout>
   )
