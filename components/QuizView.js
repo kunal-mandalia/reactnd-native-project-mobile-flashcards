@@ -6,14 +6,22 @@ const Progress = ({ activeQuestion, totalQuestions }) => (
   <Text>{activeQuestion} / {totalQuestions}</Text>
 )
 
-const Question = ({ question, answer, showAnswer, onShowAnswer, onHideAnswer, onAnswer}) => {
+const FlashCard = ({ question, answer, showAnswer, onShowAnswer, onHideAnswer, onAnswer}) => {
   return (
     <View>
       <Text>{showAnswer ? `Answer: ${answer}` :  `Question: ${question}`}</Text>
       <Button title='show answer' onPress={onShowAnswer} />
       <Button title='hide answer' onPress={onHideAnswer} />
-      <Button title='answer - incorrect' onPress={() => { onAnswer(false) }} />
-      <Button title='answer - correct' onPress={() => { onAnswer(true) }} />
+      <Button className='btn-incorrect' title='answer - incorrect' onPress={() => { onAnswer(false) }} />
+      <Button className='btn-correct' title='answer - correct' onPress={() => { onAnswer(true) }} />
+    </View>
+  )
+}
+
+const Results = () => {
+  return (
+    <View>
+      <Text>Finito!</Text>
     </View>
   )
 }
@@ -44,19 +52,23 @@ class QuizView extends Component {
     const { activeQuestion, myAnswers, showAnswer } = this.state
     const { deck } = this.props.navigation.state.params
     const { title, questions } = deck
-    return (
-      <View>
-        <Text>QuizView</Text>
-        <Text>{JSON.stringify(this.state)}</Text>
-        <Progress activeQuestion={activeQuestion + 1} totalQuestions={deck.questions.length} />
-        <Question
-          question={questions[0].question}
-          answer={questions[0].answer}
+    const node = myAnswers.length === questions.length
+      ? <Results />
+      : <FlashCard
+          question={questions[activeQuestion].question}
+          answer={questions[activeQuestion].answer}
           showAnswer={showAnswer}
           onShowAnswer={this.onShowAnswer}
           onHideAnswer={this.onHideAnswer}
           onAnswer={this.onAnswer}
         />
+    
+    return (
+      <View>
+        <Text>QuizView</Text>
+        <Text>{JSON.stringify(this.state)}</Text>
+        <Progress activeQuestion={activeQuestion + 1} totalQuestions={deck.questions.length} />
+        {node}
       </View>
     )
   }
