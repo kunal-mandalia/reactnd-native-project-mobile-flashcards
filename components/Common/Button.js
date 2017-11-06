@@ -2,8 +2,8 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { white, purple } from '../../utils/colors'
 
-const Button = ({ title, onPress, color, ...rest }) => (
-  <TouchableOpacity style={styles.container} onPress={onPress} {...rest}>
+const Button = ({ title, onPress, color, width, ...rest }) => (
+  <TouchableOpacity style={[styles.container, { width: width }]} onPress={onPress} {...rest}>
     <Text style={styles.text}>
       {title}
     </Text>
@@ -12,12 +12,12 @@ const Button = ({ title, onPress, color, ...rest }) => (
 
 const styles = StyleSheet.create({
   container: {
-    width: '80%',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: purple,
     padding: 20,
     borderRadius: 4,
+    minWidth: 200,
   },
   text: {
     color: white,

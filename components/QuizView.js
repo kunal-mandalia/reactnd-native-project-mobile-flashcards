@@ -1,32 +1,50 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
-import { Button } from './Common'
+import { View, Text, StyleSheet } from 'react-native'
+import { Button, Title } from './Common'
 
-const Progress = ({ activeQuestion, totalQuestions }) => (
-  <Text>{activeQuestion} / {totalQuestions}</Text>
-)
+const Progress = ({ myAnswers, totalQuestions }) => {
+  return <Text style={styles.progress}>{myAnswers.length} / {totalQuestions}</Text>  
+}
+
+const Score = ({ myAnswers }) => {
+  const percent = Math.round(100 * myAnswers.filter(a => a === true).length / myAnswers.length)
+  return (
+    <View>
+      <Text>{percent}%</Text>
+    </View>
+  )
+}
 
 const FlashCard = ({ question, answer, showAnswer, onShowAnswer, onHideAnswer, onAnswer}) => {
+  const node = showAnswer ? (
+    <View style={styles.flashCardTop}>
+      <Text style={styles.displayText}>{answer}</Text>
+      <Button title='Show Question' onPress={onHideAnswer} />
+    </View>
+  ) : (
+    <View style={styles.flashCardTop}>
+      <Text style={styles.displayText}>{question}</Text>
+      <Button title='Show Answer' onPress={onShowAnswer} />
+    </View>
+  )
   return (
-    <View>
-      <Text>{showAnswer ? `Answer: ${answer}` :  `Question: ${question}`}</Text>
-      <Button title='show answer' onPress={onShowAnswer} />
-      <Button title='hide answer' onPress={onHideAnswer} />
-      <Button className='btn-incorrect' title='answer - incorrect' onPress={() => { onAnswer(false) }} />
-      <Button className='btn-correct' title='answer - correct' onPress={() => { onAnswer(true) }} />
+    <View style={styles.flashCard}>
+      {node}
+      <View style={styles.responseContainer}>
+        <Button className='btn-correct' title='answer - correct' onPress={() => { onAnswer(true) }} width={'50%'} />
+        <Button className='btn-incorrect' title='answer - incorrect' onPress={() => { onAnswer(false) }} width={'50%'} />
+      </View>
     </View>
   )
 }
 
-const Results = () => {
+const Results = ({ myAnswers }) => {
   return (
     <View>
-      <Text>Finito!</Text>
+      <Score myAnswers={myAnswers} />
     </View>
   )
 }
-
-// TODO: <Result onRetry showDetails />
 
 class QuizView extends Component {
   constructor (props) {
@@ -53,7 +71,7 @@ class QuizView extends Component {
     const { deck } = this.props.navigation.state.params
     const { title, questions } = deck
     const node = myAnswers.length === questions.length
-      ? <Results />
+      ? <Results myAnswers={myAnswers} />
       : <FlashCard
           question={questions[activeQuestion].question}
           answer={questions[activeQuestion].answer}
@@ -64,14 +82,44 @@ class QuizView extends Component {
         />
     
     return (
-      <View>
-        <Text>QuizView</Text>
-        <Text>{JSON.stringify(this.state)}</Text>
-        <Progress activeQuestion={activeQuestion + 1} totalQuestions={deck.questions.length} />
+      <View style={styles.container}>
+        <Title text={showAnswer ? 'Answer' : 'Question'} />
+        <Progress myAnswers={myAnswers} totalQuestions={deck.questions.length} />
         {node}
       </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    flex: 1,
+    alignItems: 'center',
+    padding: 20,
+  },
+  flashCard: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  displayText: {
+    fontSize: 22,
+    margin: 8,
+  },
+  progress: {
+    fontSize: 18,
+  },
+  responseContainer: {
+    flexDirection: 'row',
+  },
+  flashCardTop: {
+    alignItems: 'center',
+  },
+  responseButton: {
+    // flex: 1,
+    color: 'black',
+    padding: 4,
+  }
+})
 
 export default QuizView
