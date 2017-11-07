@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Button, Title } from './Common'
+import { white, red, green, lightBlue, darkGrey } from '../utils/colors'
 
 const Progress = ({ myAnswers, totalQuestions }) => {
   return <Text style={styles.progress}>{myAnswers.length} / {totalQuestions}</Text>  
@@ -17,22 +18,33 @@ const Score = ({ myAnswers }) => {
 
 const FlashCard = ({ question, answer, showAnswer, onShowAnswer, onHideAnswer, onAnswer}) => {
   const node = showAnswer ? (
-    <View style={styles.flashCardTop}>
-      <Text style={styles.displayText}>{answer}</Text>
-      <Button title='Show Question' onPress={onHideAnswer} />
+    <View style={styles.flashCardQuestion}>
+      <Text style={styles.displayText}>{`Answer: ${answer}`}</Text>
+      <Button
+        title='Show Question'
+        color={lightBlue}
+        backgroundColor='transparent'  
+        onPress={onHideAnswer} />
     </View>
   ) : (
-    <View style={styles.flashCardTop}>
-      <Text style={styles.displayText}>{question}</Text>
-      <Button title='Show Answer' onPress={onShowAnswer} />
+    <View style={styles.flashCardQuestion}>
+      <Text style={styles.displayText}>{`Question: ${question}`}</Text>
+      <Button
+        title='Show Answer'
+        color={lightBlue}
+        backgroundColor='transparent'        
+        onPress={onShowAnswer} />
     </View>
   )
   return (
     <View style={styles.flashCard}>
       {node}
-      <View style={styles.responseContainer}>
-        <Button className='btn-correct' title='answer - correct' onPress={() => { onAnswer(true) }} width={'50%'} />
-        <Button className='btn-incorrect' title='answer - incorrect' onPress={() => { onAnswer(false) }} width={'50%'} />
+      <View style={styles.flashCardActions}>
+        <View style={styles.row}>
+          <Button width='45%' color={white} backgroundColor={red} className='btn-incorrect' title='Incorrect' onPress={() => { onAnswer(false) }} />
+          <View style={styles.actionSpace} />
+          <Button width='45%' color={white} backgroundColor={green} className='btn-correct' title='Correct' onPress={() => { onAnswer(true) }} />
+        </View>
       </View>
     </View>
   )
@@ -47,6 +59,14 @@ const Results = ({ myAnswers }) => {
 }
 
 class QuizView extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: `${navigation.state.params.deck.title}`,
+     headerTitleStyle : {textAlign: 'center',alignSelf:'center'},
+        headerStyle:{
+            backgroundColor:'white',
+        },
+    })
+
   constructor (props) {
     super(props)
     this.state = {
@@ -62,7 +82,7 @@ class QuizView extends Component {
   onAnswer = (isCorrect) => {
     this.setState(state => ({
       myAnswers: state.myAnswers.concat(isCorrect),
-      activeQuestion: state.activeQuestion + 1
+      activeQuestion: state.activeQuestion + 1,
     }))
   }
 
@@ -83,7 +103,6 @@ class QuizView extends Component {
     
     return (
       <View style={styles.container}>
-        <Title text={showAnswer ? 'Answer' : 'Question'} />
         <Progress myAnswers={myAnswers} totalQuestions={deck.questions.length} />
         {node}
       </View>
@@ -101,25 +120,38 @@ const styles = StyleSheet.create({
   flashCard: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  flashCardQuestion: {
+    flex: 1,
+    alignItems: 'center',
+    padding: '10%',
+  },
+  flashCardActions: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingBottom: 40,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  actionSpace: {
+    padding: 4,
+  },
+  title: {
+    fontSize: 16,
+    margin: 12,
   },
   displayText: {
     fontSize: 22,
     margin: 8,
   },
   progress: {
-    fontSize: 18,
+    fontSize: 16,
+    color: darkGrey,
   },
-  responseContainer: {
-    flexDirection: 'row',
-  },
-  flashCardTop: {
-    alignItems: 'center',
-  },
-  responseButton: {
-    // flex: 1,
-    color: 'black',
-    padding: 4,
-  }
 })
 
 export default QuizView
