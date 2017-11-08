@@ -11,7 +11,7 @@ export const initialState = {
     error: false
   }
 }
-
+// TODO: handle async actions
 const reducer = (state = initialState, action = { type: null }) => {
   switch (action.type) {
     case c.GET_DECKS_REQUEST:
@@ -25,6 +25,18 @@ const reducer = (state = initialState, action = { type: null }) => {
         decks: action.value,
         status: success
       }
+    case c.SAVE_DECK_TITLE_SUCCESS: {
+      return {
+        ...state,
+        decks: {
+          ...state.decks,
+          [action.value]: {
+            title: action.value,
+            questions: []
+          }
+        }
+      }
+    }
     default:
       return state
   }
