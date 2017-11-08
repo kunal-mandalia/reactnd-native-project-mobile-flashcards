@@ -1,36 +1,74 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
+import { AppLoading } from 'expo'
 import { white, lightGrey, darkGrey, black } from '../utils/colors'
 import { connect } from 'react-redux'
 import { getDecks } from '../redux/actions'
 
 class DeckListView extends Component {
+  static navigationOptions = ({ navigation }) => ({ title: 'All Decks' })
+
   componentDidMount () {
     const { loading, loaded, error } = this.props.status
     if (!loading && !loaded) {
       this.props.getDecks()
     }
   }
+
+  _keyExtractor = (item, index) => {
+    return item.title
+  }
+
+  _renderItem = ({ item }) => (
+    <View key={item.title} style={styles.card}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => this.props.navigation.navigate('IndividualDeckView', { deck: item })}
+      >
+        <Text style={styles.title}>{item.title}</Text>
+        {<Text style={styles.subtitle}>{item.questions ? item.questions.length : '0'} cards</Text>}
+      </TouchableOpacity>
+    </View>
+  )
+
+  _renderSeparator = () => (
+    <View
+      style={{
+        height: 1,
+        backgroundColor: '#CED0CE',
+      }}
+    />
+  )
   
   render () {
     const { decks, status, navigation } = this.props
+    const decksArray = Object.keys(decks).map(k => decks[k])
     return (
-      <View style={styles.container}>
-        {Object.keys(decks).map((title, i, titles) => (
-          <View key={title} style={styles.card}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => navigation.navigate('IndividualDeckView', { deck: decks[title] })}
-            >
-              <Text style={styles.title}>{title}</Text>
-              <Text>{decks[title] && decks[title].questions ? decks[title].questions.length : ' - '} cards</Text>
-            </TouchableOpacity>          
-          </View>
-        ))}
+      <View>
+        {status.loaded ? (
+          <FlatList
+            data={decksArray}
+            renderItem={this._renderItem}
+            keyExtractor={this._keyExtractor}
+            ItemSeparatorComponent={this._renderSeparator}
+          />
+        ) : (
+          <AppLoading />
+        )}
       </View>
     )
   }
 }
+
+const mapStateToProps = (state, ownProps) => ({
+  decks: state.decks,
+  status: state.status,
+  navigation: ownProps.navigation
+})
+
+const mapDispatchToProps = dispatch => ({
+  getDecks: () => { dispatch(getDecks()) }
+})
 
 const styles = StyleSheet.create({
   container: {
@@ -40,55 +78,21 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   card: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: 20,
-    borderColor: darkGrey,
-    borderRadius: 4,
-    borderWidth: 1,
+    padding: 12,
   },
   button: {
-    alignItems: 'center',    
+    flex: 1,
+    alignItems: 'center',
   },
   title: {
     fontSize: 20,
+  },
+  subtitle: {
+    color: darkGrey,
   }
-})
-
-// DeckListView.defaultProps = {
-//   decks: {
-//     React: {
-//       title: 'React',
-//       questions: [
-//         {
-//           question: 'What is React?',
-//           answer: 'A library for managing user interfaces'
-//         },
-//         {
-//           question: 'Where do you make Ajax requests in React?',
-//           answer: 'The componentDidMount lifecycle event'
-//         }
-//       ]
-//     },
-//     JavaScript: {
-//       title: 'JavaScript',
-//       questions: [
-//         {
-//           question: 'What is a closure?',
-//           answer: 'The combination of a function and the lexical environment within which that function was declared.'
-//         }
-//       ]
-//     }
-//   }
-// }
-const mapStateToProps = (state, ownProps) => ({
-  decks: state.decks,
-  status: state.status,
-  navigation: ownProps.navigation
-})
-
-const mapDispatchToProps = dispatch => ({
-  getDecks: () => { dispatch(getDecks()) }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeckListView)
