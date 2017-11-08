@@ -1,9 +1,9 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { white, purple } from '../../utils/colors'
+import { white, purple, mediumGrey } from '../../utils/colors'
 
-const Button = ({ title, onPress, color, backgroundColor, width, ...rest }) => (
-  <TouchableOpacity style={[styles.container, { backgroundColor, width }]} onPress={onPress} {...rest}>
+const Button = ({ title, onPress, color, backgroundColor, width, disabled, ...rest }) => (
+  <TouchableOpacity style={[styles.container, { backgroundColor: disabled ? mediumGrey : backgroundColor, width }]} disabled={disabled} onPress={onPress} {...rest}>
     <Text style={{ color }}>
       {title}
     </Text>

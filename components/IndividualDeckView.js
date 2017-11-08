@@ -9,7 +9,6 @@ const IndividualDeckView = ({ navigation }) => {
   const { deck } = navigation.state.params
   return (
     <CoreLayout marginTop>
-      <Title text={deck.title} />
       <Button
         title='Add Card'
         onPress={() => { navigation.navigate('NewQuestionView', { deckTitle: deck.title })}}
@@ -18,9 +17,17 @@ const IndividualDeckView = ({ navigation }) => {
       <Button
         title='Start Quiz'
         onPress={() => { navigation.navigate('QuizView', { deck })}}
+        disabled={deck.questions.length === 0}
       />
+      <Space />
+      
+      <Title size={18} text={`${deck.questions.length} ${deck.questions.length === 1 ? 'card' : 'cards'}`} />
+      
     </CoreLayout>
   )
 }
+
+IndividualDeckView.navigationOptions = ({ navigation }) => ({ title: navigation.state.params.deck.title || 'Deck' })
+
 
 export default IndividualDeckView

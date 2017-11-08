@@ -3,8 +3,8 @@ import { View, Text, StyleSheet } from 'react-native'
 import { Button, Title } from './Common'
 import { white, red, green, lightBlue, darkGrey } from '../utils/colors'
 
-const Progress = ({ myAnswers, totalQuestions }) => {
-  return <Text style={styles.progress}>{myAnswers.length} / {totalQuestions}</Text>  
+const Progress = ({ isQuestion, myAnswers, totalQuestions }) => {
+  return <Text style={styles.progress}>{isQuestion ? 'Question: ' : 'Answer: '} {myAnswers.length} / {totalQuestions}</Text>  
 }
 
 const Score = ({ myAnswers }) => {
@@ -19,7 +19,7 @@ const Score = ({ myAnswers }) => {
 const FlashCard = ({ question, answer, showAnswer, onShowAnswer, onHideAnswer, onAnswer}) => {
   const node = showAnswer ? (
     <View style={styles.flashCardQuestion}>
-      <Text style={styles.displayText}>{`Answer: ${answer}`}</Text>
+      <Text style={styles.displayText}>{`${answer}`}</Text>
       <Button
         title='Show Question'
         color={lightBlue}
@@ -28,7 +28,7 @@ const FlashCard = ({ question, answer, showAnswer, onShowAnswer, onHideAnswer, o
     </View>
   ) : (
     <View style={styles.flashCardQuestion}>
-      <Text style={styles.displayText}>{`Question: ${question}`}</Text>
+      <Text style={styles.displayText}>{`${question}`}</Text>
       <Button
         title='Show Answer'
         color={lightBlue}
@@ -60,7 +60,7 @@ const Results = ({ myAnswers }) => {
 
 class QuizView extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: `${navigation.state.params.deck.title}`,
+    title: `Quiz: ${navigation.state.params.deck.title}`,
      headerTitleStyle : {textAlign: 'center',alignSelf:'center'},
         headerStyle:{
             backgroundColor:'white',
@@ -103,7 +103,7 @@ class QuizView extends Component {
     
     return (
       <View style={styles.container}>
-        <Progress myAnswers={myAnswers} totalQuestions={deck.questions.length} />
+        <Progress isQuestion={!showAnswer} myAnswers={myAnswers} totalQuestions={deck.questions.length} />
         {node}
       </View>
     )
@@ -125,13 +125,13 @@ const styles = StyleSheet.create({
   flashCardQuestion: {
     flex: 1,
     alignItems: 'center',
-    padding: '10%',
+    padding: '2%',
   },
   flashCardActions: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-end',
-    paddingBottom: 40,
+    paddingBottom: 12,
   },
   row: {
     flexDirection: 'row',
