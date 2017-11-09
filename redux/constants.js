@@ -13,7 +13,3 @@ export const ADD_CARD_TO_DECK_SUCCESS = 'mobile-flashcards/ADD_CARD_TO_DECK_SUCC
 export const ADD_CARD_TO_DECK_ERROR = 'mobile-flashcards/ADD_CARD_TO_DECK_ERROR'
 
 export const GET_DECK = 'mobile-flashcards/GET_DECK'
-
-export const CREATE_QUESTION_REQUEST = 'mobile-flashcards/CREATE_QUESTION_REQUEST'
-export const CREATE_QUESTION_SUCCESS = 'mobile-flashcards/CREATE_QUESTION_SUCCESS'
-export const CREATE_QUESTION_ERROR = 'mobile-flashcards/CREATE_QUESTION_ERROR'
