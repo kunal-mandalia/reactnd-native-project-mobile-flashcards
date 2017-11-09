@@ -37,6 +37,25 @@ const reducer = (state = initialState, action = { type: null }) => {
         }
       }
     }
+    case c.ADD_CARD_TO_DECK_REQUEST: {
+      return {
+        ...state,
+        status: request,
+      }
+    }
+    case c.ADD_CARD_TO_DECK_SUCCESS: {
+      return {
+        ...state,
+        decks: {
+          ...state.decks,
+          [action.title]: {
+            title: action.title,
+            questions: state.decks[action.title].questions.concat({...action.card})
+          }
+        },
+        status: success,
+      }
+    }
     default:
       return state
   }

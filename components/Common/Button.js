@@ -2,8 +2,8 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { white, purple, mediumGrey } from '../../utils/colors'
 
-const Button = ({ title, onPress, color, backgroundColor, width, disabled, ...rest }) => (
-  <TouchableOpacity style={[styles.container, { backgroundColor: disabled ? mediumGrey : backgroundColor, width }]} disabled={disabled} onPress={onPress} {...rest}>
+const Button = ({ title, onPress, color, backgroundColor, width, disabled, style, ...rest }) => (
+  <TouchableOpacity style={[styles.container, { backgroundColor: disabled ? mediumGrey : backgroundColor, width }, style]} disabled={disabled} onPress={onPress} {...rest}>
     <Text style={{ color }}>
       {title}
     </Text>
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     borderRadius: 4,
-    minWidth: 150,
+    // minWidth: 150,
   }
 })
 
