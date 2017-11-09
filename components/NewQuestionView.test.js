@@ -6,11 +6,15 @@ import { shallow } from 'enzyme'
 const props = {
   navigation: {
     dispatch: jest.fn(),
+    setParams: jest.fn(),
     goBack: jest.fn(),
     state: {
       key: 'id-1508889104572-2',
       params: {
-        deckTitle: 'Audiobook narrators'
+        deck: {
+          title: 'Audiobook narrators',
+          questions: []
+        }
       }
     }
   },
@@ -29,6 +33,6 @@ describe(`<NewQuestionView .../>`, () => {
     expect(wrapper.state().answer).toEqual(answer)
 
     wrapper.find('.submit').simulate('press')
-    expect(props.addCardToDeck).toBeCalledWith(props.navigation.state.params.deckTitle, { question, answer })
+    expect(props.addCardToDeck).toBeCalledWith(props.navigation.state.params.deck.title, { question, answer })
   })
 })
