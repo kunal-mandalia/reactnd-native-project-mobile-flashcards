@@ -13,11 +13,11 @@ const styles = StyleSheet.create({
   control: {
     backgroundColor: white,
     borderWidth: 1,
-    borderColor: purple,
-    borderRadius: 26,
+    borderColor: lightGrey,
+    borderRadius: 25,
     padding: 14,
-    width: '80%',
-    marginVertical: 6,
+    width: '100%',
+    marginVertical: 4,
   }
 })
 
