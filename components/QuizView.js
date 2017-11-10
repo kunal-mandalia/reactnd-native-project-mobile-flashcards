@@ -4,7 +4,10 @@ import { Button, Title } from './Common'
 import { white, red, green, lightBlue, darkGrey } from '../utils/colors'
 
 const Progress = ({ isQuestion, myAnswers, totalQuestions }) => {
-  return <Text style={styles.progress}>{isQuestion ? 'Question: ' : 'Answer: '} {myAnswers.length} / {totalQuestions}</Text>  
+  let text = myAnswers.length === totalQuestions
+    ? 'Finished Quiz'
+    : (`${isQuestion ? `Question` : `Answer`} ${myAnswers.length} of ${totalQuestions}`)
+  return <Text style={styles.progress}>{text}</Text>  
 }
 
 const Score = ({ myAnswers }) => {
@@ -16,23 +19,21 @@ const Score = ({ myAnswers }) => {
   )
 }
 
-const FlashCard = ({ question, answer, showAnswer, onShowAnswer, onHideAnswer, onAnswer}) => {
+const FlashCard = ({ question, answer, showAnswer, onShowAnswer, onHideAnswer, onAnswer }) => {
   const node = showAnswer ? (
     <View style={styles.flashCardQuestion}>
       <Text style={styles.displayText}>{`${answer}`}</Text>
       <Button
+        btnStyle='quaternary'
         title='Show Question'
-        color={lightBlue}
-        backgroundColor='transparent'  
         onPress={onHideAnswer} />
     </View>
   ) : (
     <View style={styles.flashCardQuestion}>
       <Text style={styles.displayText}>{`${question}`}</Text>
       <Button
+        btnStyle='quaternary'
         title='Show Answer'
-        color={lightBlue}
-        backgroundColor='transparent'        
         onPress={onShowAnswer} />
     </View>
   )
@@ -41,19 +42,34 @@ const FlashCard = ({ question, answer, showAnswer, onShowAnswer, onHideAnswer, o
       {node}
       <View style={styles.flashCardActions}>
         <View style={styles.row}>
-          <Button width='45%' color={white} backgroundColor={red} className='btn-incorrect' title='Incorrect' onPress={() => { onAnswer(false) }} />
+          <Button btnStyle='primary-inverse' width='49%' className='btn-incorrect' title='Incorrect' onPress={() => { onAnswer(false) }} />
           <View style={styles.actionSpace} />
-          <Button width='45%' color={white} backgroundColor={green} className='btn-correct' title='Correct' onPress={() => { onAnswer(true) }} />
+          <Button width='49%' className='btn-correct' title='Correct' onPress={() => { onAnswer(true) }} />
         </View>
       </View>
     </View>
   )
 }
 
-const Results = ({ myAnswers }) => {
+const Results = ({ myAnswers, onRestartQuiz, goBack }) => {
   return (
-    <View>
-      <Score myAnswers={myAnswers} />
+    <View style={styles.resultsContainer}>
+      <View style={styles.resultsStats}>
+      </View>
+      <View style={styles.resultsActions}>
+        <Button
+          btnStyle='primary-inverse'
+          width='49%'
+          className='btn-incorrect'
+          title='Back to Deck'
+          onPress={goBack} />
+        <Button
+          btnStyle='primary'
+          width='49%'
+          className='btn-incorrect'
+          title='Restart Quiz'
+          onPress={onRestartQuiz} />
+      </View>
     </View>
   )
 }
@@ -86,12 +102,17 @@ class QuizView extends Component {
     }))
   }
 
+  onRestartQuiz = () => { this.setState({ activeQuestion: 0, myAnswers: [] }) }
+  goBack = () => {
+    this.props.navigation.goBack()
+  }
+
   render () {
     const { activeQuestion, myAnswers, showAnswer } = this.state
     const { deck } = this.props.navigation.state.params
     const { title, questions } = deck
     const node = myAnswers.length === questions.length
-      ? <Results myAnswers={myAnswers} />
+      ? <Results myAnswers={myAnswers} onRestartQuiz={this.onRestartQuiz} goBack={this.goBack} />
       : <FlashCard
           question={questions[activeQuestion].question}
           answer={questions[activeQuestion].answer}
@@ -99,6 +120,7 @@ class QuizView extends Component {
           onShowAnswer={this.onShowAnswer}
           onHideAnswer={this.onHideAnswer}
           onAnswer={this.onAnswer}
+          onRestartQuiz={this.onRestartQuiz}
         />
     
     return (
@@ -119,19 +141,17 @@ const styles = StyleSheet.create({
   },
   flashCard: {
     flex: 1,
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'flex-end',
   },
   flashCardQuestion: {
     flex: 1,
     alignItems: 'center',
-    padding: '2%',
+    justifyContent: 'center',
   },
   flashCardActions: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-end',
-    paddingBottom: 12,
   },
   row: {
     flexDirection: 'row',
@@ -152,6 +172,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: darkGrey,
   },
+  resultsContainer: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  resultsStats: {
+    flex: 1,
+  },
+  resultsActions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  }
 })
 
 export default QuizView
