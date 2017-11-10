@@ -63,16 +63,15 @@ export class NewQuestionView extends Component {
         <InputText className='answer' placeholder='Answer' onChangeText={this.onChangeAnswer} />
         <View style={styles.buttonsContainer}>
           <Button
-            width={'45%'}
-            color={white}
-            backgroundColor={darkGrey}
+            btnStyle='secondary'
+            width={'49%'}
             className='cancel'
             onPress={this.onCancel}
             title='Cancel'
           />
           <Button
             disabled={waiting}
-            width={'45%'}
+            width={'49%'}
             color={white}
             backgroundColor={waiting ? mediumGrey : purple}
             className='submit'
@@ -99,10 +98,8 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: 'row',
     width: '100%',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     marginTop: 20,
-    paddingLeft: 20,
-    paddingRight: 20,
   },
   title: {
     fontSize: 16,
