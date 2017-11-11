@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import { Button, Title } from './Common'
-import { white, red, green, lightBlue, darkGrey } from '../utils/colors'
+import { Button, Title, Space } from './Common'
+import { white, red, green, lightBlue, darkGrey, mediumGrey, lightGrey, purple, transparent } from '../utils/colors'
+import ProgressCircle from 'react-native-progress-circle'
 
 const Progress = ({ isQuestion, myAnswers, totalQuestions }) => {
   let text = myAnswers.length === totalQuestions
@@ -52,9 +53,24 @@ const FlashCard = ({ question, answer, showAnswer, onShowAnswer, onHideAnswer, o
 }
 
 const Results = ({ myAnswers, onRestartQuiz, goBack }) => {
+  const correct = myAnswers.filter(a => a === true).length
+  const total = myAnswers.length
+  const percent = Math.round(100 * correct / total)
   return (
     <View style={styles.resultsContainer}>
       <View style={styles.resultsStats}>
+        <ProgressCircle
+          percent={percent}
+          radius={100}
+          borderWidth={10}
+          color={lightBlue}
+          shadowColor={lightGrey}
+          bgColor={white}
+        >
+          <Text style={{ fontSize: 26 }}>{`${percent}%`}</Text>
+          <Space />
+          <Text style={{ fontSize: 18 }}>{`${correct}/${total}`}</Text>
+        </ProgressCircle>
       </View>
       <View style={styles.resultsActions}>
         <Button
@@ -178,6 +194,8 @@ const styles = StyleSheet.create({
   },
   resultsStats: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   resultsActions: {
     flexDirection: 'row',
