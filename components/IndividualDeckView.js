@@ -54,28 +54,29 @@ class IndividualDeckView extends Component {
     const { title } = this.props
     const { deck } = this.state
     return (
-      <CoreLayout>
+      <View>
         {deck
           ? (
-            <View style={{ flex: 1 }}>
+            <CoreLayout>
               <Button
-                width='80%'
-                title='Add Card'
+                width={'80%'}
+                title='Add Card to Deck'
                 onPress={() => { navigation.navigate('NewQuestionView', { deck })}}
               />
               <Space />
               <Button
-                width='80%'
-                title='Start Quiz'
+                width={'80%'}                
+                btnStyle='primary-inverse'
+                title={`Start Quiz ${deck.questions.length > 0 ? `(${deck.questions.length})` : ''}`}
                 onPress={() => { navigation.navigate('QuizView', { deck })}}
                 disabled={deck.questions.length === 0}
               />
-            </View>
+            </CoreLayout>
           )
           : (
             <Text>Trouble finding deck {title}</Text>            
           )}
-      </CoreLayout>
+      </View>
     )
   }
 }
