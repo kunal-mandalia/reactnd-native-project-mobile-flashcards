@@ -25,7 +25,7 @@ class NewDeckView extends Component {
   }
   
   render () {
-    const { name } = this.props
+    const { name } = this.state
     return (
       <CoreLayout>
         <InputText
@@ -34,8 +34,10 @@ class NewDeckView extends Component {
           onChangeText={this.onChangeText}
         />
         <Button
+          style={{ marginTop: 6 }}
           title='Create'
           onPress={this.onSubmit}
+          disabled={name === ''}
         />
       </CoreLayout>
     )

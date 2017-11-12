@@ -2,9 +2,7 @@ import * as c from './constants'
 import { request, success, error } from '../utils/helper'
 
 export const initialState = {
-  decks: {
-    titles: []
-  },
+  decks: {},
   status: {
     loaded: false,
     loading: false,
@@ -50,7 +48,9 @@ const reducer = (state = initialState, action = { type: null }) => {
           ...state.decks,
           [action.title]: {
             title: action.title,
-            questions: state.decks[action.title].questions.concat({...action.card})
+            questions: state.decks[action.title]
+              ? state.decks[action.title].questions.concat({...action.card})
+              : [{...action.card}]
           }
         },
         status: success,

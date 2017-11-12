@@ -32,6 +32,7 @@ import { connect } from 'react-redux'
 // IndividualDeckView.navigationOptions = ({ navigation }) => ({ title: navigation.state.params.deck.title || 'Deck' })
 
 class IndividualDeckView extends Component {
+  static navigationOptions = ({ navigation }) => ({ title: navigation.state.params.deckTitle || 'Deck' })  
   constructor (props) {
     super(props)
     this.state = { 
@@ -50,8 +51,20 @@ class IndividualDeckView extends Component {
     }
   }
 
+  componentWillReceiveProps (nextProps) {
+    const { decks, title } = nextProps
+    if (nextProps.decks) {
+      const deck = decks[title]
+      if (deck) {
+        this.setState({ deck })
+      } else {
+        this.setState({ error: true })
+      }
+    }
+  }
+
   render () {
-    const { title } = this.props
+    const { title, navigation } = this.props
     const { deck } = this.state
     return (
       <View>
@@ -83,7 +96,9 @@ class IndividualDeckView extends Component {
 
 const mapStateToProps = (state, ownProps) => ({
   decks: state.decks,
+  navigation: ownProps.navigation,
   title: ownProps.navigation.state.params.deckTitle,
+  ownProps: ownProps,
 })
 
 export default connect(mapStateToProps)(IndividualDeckView)
