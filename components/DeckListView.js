@@ -23,7 +23,7 @@ class DeckListView extends Component {
     <View key={item.title} style={styles.card}>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => this.props.navigation.navigate('IndividualDeckView', { deck: item })}
+        onPress={() => this.props.navigation.navigate('IndividualDeckView', { deckTitle: item.title })}
       >
         <Text style={styles.title}>{item.title}</Text>
         {<Text style={styles.subtitle}>{item.questions ? item.questions.length : '0'} cards</Text>}

@@ -4,29 +4,101 @@ import CoreLayout from './Common/CoreLayout'
 import Button from './Common/Button'
 import Space from './Common/Space'
 import Title from './Common/Title'
-import { green } from '../utils/colors'
+import { connect } from 'react-redux'
 
-const IndividualDeckView = ({ navigation }) => {
-  const { deck } = navigation.state.params
-  return (
-    <CoreLayout marginTop>
-      <Button
-        title='Add Card to Deck'
-        onPress={() => { navigation.navigate('NewQuestionView', { deck })}}
-      />
-      <Space />
-      <Button
-        btnStyle='primary-inverse'
-        title={`Start Quiz ${deck.questions.length > 0 ? `(${deck.questions.length})` : ''}`}
-        onPress={() => { navigation.navigate('QuizView', { deck })}}
-        disabled={deck.questions.length === 0}
-      />
-      <Space />
-    </CoreLayout>
-  )
+// Convert to class and get deck from store
+// navigationOptions set within lifecycle? if not, use title
+// const IndividualDeckView = ({ navigation }) => {
+//   const { deck } = navigation.state.params
+//   return (
+//     <CoreLayout marginTop>
+//       <Button
+//         width='80%'
+//         title='Add Card'
+//         onPress={() => { navigation.navigate('NewQuestionView', { deck })}}
+//       />
+//       <Space />
+//       <Button
+//         width='80%'
+//         title='Start Quiz'
+//         onPress={() => { navigation.navigate('QuizView', { deck })}}
+//         disabled={deck.questions.length === 0}
+//       />
+//       <Space />
+//       <Title size={16} text={`${deck.questions.length} ${deck.questions.length === 1 ? 'card' : 'cards'}`} />
+//     </CoreLayout>
+//   )
+// }
+// IndividualDeckView.navigationOptions = ({ navigation }) => ({ title: navigation.state.params.deck.title || 'Deck' })
+
+class IndividualDeckView extends Component {
+  static navigationOptions = ({ navigation }) => ({ title: navigation.state.params.deckTitle || 'Deck' })  
+  constructor (props) {
+    super(props)
+    this.state = { 
+      deck: null,
+      error: false,
+    }
+  }
+
+  componentDidMount () {
+    const { title, decks } = this.props
+    const deck = decks[title]
+    if (deck) {
+      this.setState({ deck })
+    } else {
+      this.setState({ error: true })
+    }
+  }
+
+  componentWillReceiveProps (nextProps) {
+    const { decks, title } = nextProps
+    if (nextProps.decks) {
+      const deck = decks[title]
+      if (deck) {
+        this.setState({ deck })
+      } else {
+        this.setState({ error: true })
+      }
+    }
+  }
+
+  render () {
+    const { title, navigation } = this.props
+    const { deck } = this.state
+    return (
+      <View>
+        {deck
+          ? (
+            <CoreLayout>
+              <Button
+                width={'80%'}
+                title='Add Card to Deck'
+                onPress={() => { navigation.navigate('NewQuestionView', { deck })}}
+              />
+              <Space />
+              <Button
+                width={'80%'}                
+                btnStyle='primary-inverse'
+                title={`Start Quiz ${deck.questions.length > 0 ? `(${deck.questions.length})` : ''}`}
+                onPress={() => { navigation.navigate('QuizView', { deck })}}
+                disabled={deck.questions.length === 0}
+              />
+            </CoreLayout>
+          )
+          : (
+            <Text>Trouble finding deck {title}</Text>            
+          )}
+      </View>
+    )
+  }
 }
 
-IndividualDeckView.navigationOptions = ({ navigation }) => ({ title: navigation.state.params.deck.title || 'Deck' })
+const mapStateToProps = (state, ownProps) => ({
+  decks: state.decks,
+  navigation: ownProps.navigation,
+  title: ownProps.navigation.state.params.deckTitle,
+  ownProps: ownProps,
+})
 
-
-export default IndividualDeckView
+export default connect(mapStateToProps)(IndividualDeckView)

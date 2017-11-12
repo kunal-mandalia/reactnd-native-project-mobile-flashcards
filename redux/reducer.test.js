@@ -23,4 +23,25 @@ describe(`reducer()`, () => {
       status: success
     })
   })
+
+  it(`${c.ADD_CARD_TO_DECK_SUCCESS} should return correct state`, () => {
+    const cardProps = {
+      title: 'Parent Deck',
+      card: {
+        question: 'Card Q',
+        answer: 'Card A',
+      }
+    }
+    expect(reducer(initialState, actions.addCardToDeckSuccess(cardProps.title, {...cardProps.card}))).toEqual({
+      ...initialState,
+      decks: {
+        ...initialState.decks,
+        [cardProps.title]: {
+          title: cardProps.title,
+          questions: [{...cardProps.card}]
+        }
+      },
+      status: success
+    })
+  })
 })
