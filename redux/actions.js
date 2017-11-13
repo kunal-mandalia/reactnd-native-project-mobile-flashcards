@@ -1,5 +1,6 @@
 import * as c from './constants'
 import { AsyncStorage } from 'react-native'
+import { Notifications, Permissions } from 'expo'
 
 /**
  * storage variable is used as dependency
@@ -13,7 +14,8 @@ export const getDecks = (storage = AsyncStorage) => {
     dispatch(getDecksRequest())
     storage.getItem(c.ASYNC_STORAGE_DECKS_KEY)
     .then((decks) => {
-      dispatch(getDecksSuccess(JSON.parse(decks)))
+      const d = decks ? JSON.parse(decks) : {}
+      dispatch(getDecksSuccess(d))
     })
     .catch((error) => {
       dispatch(getDecksError(error))
@@ -56,6 +58,59 @@ export const addCardToDeck = (title, card, storage = AsyncStorage) => {
     })
     .catch((error) => {
       dispatch(addCardToDeckError(error))
+    })
+  }
+}
+
+export const clearLocalNotification = (storage = AsyncStorage) => {
+  return (dispatch) => {
+    return storage.removeItem(c.NOTIFICATION_KEY)
+      .then(storage.cancelAllScheduledNotificationsAsync())
+  }
+}
+
+export const createNotification = () => ({
+  title: 'Log your stats',
+  body: `Don't forget to log your stats`,
+  ios: {
+    sound: true,
+  },
+  android: {
+    sound: true,
+    priority: 'high',
+    sticky: false,
+    vibrate: false,
+  }
+})
+
+export const setLocalNotification = (notifications = Notifications,storage = AsyncStorage, permissions = Permissions) => {
+  return (dispatch) => {
+    storage.getItem(c.NOTIFICATION_KEY)
+    .then(JSON.parse)
+    .then((data) => {
+      if (data === null) {
+        permissions.askAsync(permissions.NOTIFICATIONS)
+        .then(({ status }) => {
+          if (status === 'granted') {
+            notifications.cancelAllScheduledNotificationsAsync()
+
+            let tomorrow = new Date()
+            tomorrow.setDate(tomorrow.getDate() + 1)
+            tomorrow.setHours(18)
+            tomorrow.setMinutes(0)
+
+            notifications.scheduleLocalNotificationAsync(
+              createNotification(),
+              {
+                time: tomorrow,
+                repeat: 'day'
+              }
+            )
+          }
+
+          storage.setItem(c.NOTIFICATION_KEY, JSON.stringify(true))
+        })
+      }
     })
   }
 }

@@ -21,7 +21,7 @@ class NewDeckView extends Component {
     const { name } = this.state
     const { saveDeckTitle, navigation } = this.props
     saveDeckTitle(name)
-    navigation.navigate('Home')
+    navigation.navigate('IndividualDeckView', { deckTitle: name })
   }
   
   render () {

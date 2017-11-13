@@ -4,6 +4,23 @@ import { AppLoading } from 'expo'
 import { white, lightGrey, darkGrey, black } from '../utils/colors'
 import { connect } from 'react-redux'
 import { getDecks } from '../redux/actions'
+import { setLocalNotification } from '../redux/actions'
+import { Button, Title, Space } from './Common'
+
+export const EmptyList = ({ navigation }) => (
+  <View style={styles.emptyList}>
+    <Title
+      text='Get started by creating a new deck to hold your flashcards and practice against'
+      size={18}
+    />
+    <Space />
+    <Button
+      btnStyle='primary'
+      width='80%'
+      onPress={() => {navigation.navigate('NewDeckView') }}
+      title='Add Deck' />
+  </View>
+)
 
 class DeckListView extends Component {
   static navigationOptions = ({ navigation }) => ({ title: 'All Decks' })
@@ -13,6 +30,7 @@ class DeckListView extends Component {
     if (!loading && !loaded) {
       this.props.getDecks()
     }
+    this.props.setLocalNotification()
   }
 
   _keyExtractor = (item, index) => {
@@ -45,16 +63,19 @@ class DeckListView extends Component {
     const decksArray = Object.keys(decks).map(k => decks[k])
     return (
       <View>
-        {status.loaded ? (
-          <FlatList
-            data={decksArray}
-            renderItem={this._renderItem}
-            keyExtractor={this._keyExtractor}
-            ItemSeparatorComponent={this._renderSeparator}
-          />
-        ) : (
-          <AppLoading />
-        )}
+        {status.loaded
+          ? (
+            decksArray.length > 0
+            ? <FlatList
+                data={decksArray}
+                renderItem={this._renderItem}
+                keyExtractor={this._keyExtractor}
+                ItemSeparatorComponent={this._renderSeparator}
+              />
+            : <EmptyList navigation={navigation} />
+          )
+          : <AppLoading />
+        }
       </View>
     )
   }
@@ -67,7 +88,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getDecks: () => { dispatch(getDecks()) }
+  getDecks: () => { dispatch(getDecks()) },
+  setLocalNotification: () => { dispatch(setLocalNotification()) },
 })
 
 const styles = StyleSheet.create({
@@ -92,6 +114,12 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     color: darkGrey,
+  },
+  emptyList: {
+    height: '100%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 })
 
