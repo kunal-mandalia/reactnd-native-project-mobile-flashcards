@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import CoreLayout from './Common/CoreLayout'
 import Button from './Common/Button'
 import Space from './Common/Space'
 import Title from './Common/Title'
 import { connect } from 'react-redux'
+import { AppLoading } from 'expo'
 
 class IndividualDeckView extends Component {
   static navigationOptions = ({ navigation }) => ({ title: navigation.state.params.deckTitle || 'Deck' })  
   constructor (props) {
     super(props)
-    this.state = { 
+    this.state = {
       deck: null,
       error: false,
     }
@@ -42,10 +43,10 @@ class IndividualDeckView extends Component {
     const { title, navigation } = this.props
     const { deck } = this.state
     return (
-      <View>
+      <CoreLayout>
         {deck
           ? (
-            <CoreLayout>
+            <View style={styles.container}>
               <Button
                 width={'80%'}
                 title='Add Card to Deck'
@@ -53,18 +54,26 @@ class IndividualDeckView extends Component {
               />
               <Space />
               <Button
-                width={'80%'}                
+                width={'80%'}
                 btnStyle='primary-inverse'
                 title={`Start Quiz ${deck.questions.length > 0 ? `(${deck.questions.length})` : ''}`}
                 onPress={() => { navigation.navigate('QuizView', { deck })}}
                 disabled={deck.questions.length === 0}
               />
-            </CoreLayout>
+              <Space />
+              <Button
+                justifySelf='flex-end'
+                btnStyle='quaternary'
+                width='80%'
+                title='Delete Deck'
+                onPress={() => { }}
+              />
+            </View>
           )
           : (
-            <Text>Trouble finding deck {title}</Text>            
+            <AppLoading />
           )}
-      </View>
+      </CoreLayout>
     )
   }
 }
@@ -74,6 +83,15 @@ const mapStateToProps = (state, ownProps) => ({
   navigation: ownProps.navigation,
   title: ownProps.navigation.state.params.deckTitle,
   ownProps: ownProps,
+})
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
 })
 
 export default connect(mapStateToProps)(IndividualDeckView)
