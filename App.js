@@ -60,22 +60,12 @@ const Stack = StackNavigator({
 })
 
 export default class App extends React.Component {
-  constructor () {
-    super()
-    this.state = { a: 1, b: 9 }
-    this.incrementA = this.incrementA.bind(this)
-  }
-
-  incrementA () { 
-    this.setState(state => ({ a: state.a + 1 }))
-  }
-
   render() {
     return (
       <Provider store={store}>
         <Stack />
       </Provider>
-    );
+    )
   }
 }
 

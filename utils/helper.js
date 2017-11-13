@@ -1,7 +1,3 @@
-export const getDeck = (id, decks) => {
-  return decks[id]
-}
-
 export const request = {
   loaded: false,
   loading: true,
