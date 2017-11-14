@@ -6,6 +6,11 @@ This project demonstrates the fundamentals of React Native including navigation,
 
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
+## Demo
+Scan the QR code with your [expo app](https://expo.io/) to see Mobile Flashcards on phone. You can find more details on the [project's expo page](https://expo.io/@kunal-mandalia/mobile-flashcards-kvm)
+
+![Expo QR Code](/assets/mobile-flashcards-qr-code.png)
+
 ## Get started
 
 Download and install this project
