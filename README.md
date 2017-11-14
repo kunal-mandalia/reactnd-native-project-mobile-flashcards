@@ -7,7 +7,7 @@ This project demonstrates the fundamentals of React Native including navigation,
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
 ## Demo
-Scan the QR code with your [expo app](https://expo.io/) to see Mobile Flashcards on phone. You can find more details on the [project's expo page](https://expo.io/@kunal-mandalia/mobile-flashcards-kvm)
+Scan the QR code with your [Expo app](https://expo.io/) to see Mobile Flashcards on phone. You can find more details on the [project's expo page](https://expo.io/@kunal-mandalia/mobile-flashcards-kvm)
 
 ![Expo QR Code](/assets/mobile-flashcards-qr-code.png)
 
@@ -19,7 +19,7 @@ Download and install this project
 - `yarn install` (or `npm install`)
 
 Start the project
-- `yarn start` and use the [Expo app](https://expo.io) to open this project without having to deploy to the app/play store)
+- `yarn start` and use the Expo app to open this project without having to deploy to the app/play store)
 - `yarn ios` to run your app in ios simulator
 - `yarn android` to run your app in an android simulator
 
@@ -29,3 +29,5 @@ Start the project
 
 ## License
 MIT
+
+<div style='text-align: center'><img style='max-width: 100px; height: auto' src='./assets/mobile-flashcards-logo.png' ></div>
