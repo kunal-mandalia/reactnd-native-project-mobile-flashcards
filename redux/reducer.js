@@ -56,6 +56,14 @@ const reducer = (state = initialState, action = { type: null }) => {
         status: success,
       }
     }
+    case c.DELETE_DECK_SUCCESS: {
+      const nextDecks = Object.assign({}, state.decks)
+      delete nextDecks[action.title]
+      return {
+        decks: nextDecks,
+        status: success,
+      }
+    }
     default:
       return state
   }

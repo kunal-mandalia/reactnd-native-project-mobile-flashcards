@@ -1,23 +1,44 @@
-import React from 'react'
+import React, {Component} from 'react'
 import { TextInput, StyleSheet } from 'react-native'
-import { white, lightGrey, black, purple } from '../../utils/colors'
+import { white, lightGrey, black, purple, lightBlue, transparent, mediumGrey, darkGrey } from '../../utils/colors'
 
-const InputText = (props) => (
-  <TextInput
-    style={styles.control}
-    {...props}
-  />
-)
+class InputText extends Component {
+  state = {
+    isFocused: false,
+  }
+
+  onFocus = () => { this.setState({ isFocused: true })}
+  onBlur = () => { this.setState({ isFocused: false })}
+
+  render () {
+    const { isFocused } = this.state
+    return (
+      <TextInput
+        style={[styles.control, isFocused ? styles.focus : styles.blur ]}
+        onFocus={this.onFocus}
+        onBlur={this.onBlur}
+        {...this.props}
+      />
+    )
+  }
+}
 
 const styles = StyleSheet.create({
   control: {
     backgroundColor: white,
     borderWidth: 1,
-    borderColor: lightGrey,
-    borderRadius: 25,
-    padding: 14,
+    borderColor: transparent,
+    borderRadius: 4,
+    borderBottomColor: mediumGrey,
+    borderBottomWidth: 4,    
+    padding: 12,
     width: '100%',
     marginVertical: 4,
+  },
+  focus: {
+    borderBottomColor: lightBlue,
+  },
+  blur: {
   }
 })
 

@@ -93,7 +93,6 @@ describe(`actions`, () => {
       const error = 'Bad request'
       const getItemStack = [{ response: JSON.stringify(allDecks) }]
       const mergeItemStack = [{ error }]
-
       const mockPromiseLib = {
         getItem: mockPromise(getItemStack),
         mergeItem: mockPromise(mergeItemStack),
@@ -102,6 +101,36 @@ describe(`actions`, () => {
       expect(mockDispatch.mock.calls[0][0]).toEqual(actions.addCardToDeckRequest(existingDeck.title, newCard))
       expect(mockDispatch.mock.calls[1][0]).toEqual(actions.addCardToDeckError(error))
       expect(mockDispatch.mock.calls.length).toEqual(2)
+    })
+  })
+
+  describe(`deleteDeck`, () => {
+    const existingDecks = {
+      Magic: {
+        title: 'Magic',
+        questions: [
+          {
+            question: 'Did David Blane levitate?',
+            answer: 'Of course'
+          }
+        ]
+      }
+    }
+
+    it(`should remove deck from decks on success`, () => {
+      const title = 'Magic'
+
+      const getItemStack = [{ response: JSON.stringify(existingDecks) }]
+      const setItemStack = [{ response: true }]
+      const mockPromiseLib = {
+        getItem: mockPromise(getItemStack),
+        setItem: mockPromise(setItemStack),
+      }
+
+      actions.deleteDeck(title, mockPromiseLib)(mockDispatch)
+      expect(mockDispatch.mock.calls[0][0]).toEqual(actions.deleteDeckRequest(title))
+      expect(mockDispatch.mock.calls[1][0]).toEqual(actions.deleteDeckSuccess(title))
+      expect(mockDispatch.mock.calls).toHaveLength(2)
     })
   })
 })

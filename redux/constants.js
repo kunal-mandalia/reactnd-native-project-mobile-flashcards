@@ -13,3 +13,7 @@ export const ADD_CARD_TO_DECK_SUCCESS = 'mobile-flashcards/ADD_CARD_TO_DECK_SUCC
 export const ADD_CARD_TO_DECK_ERROR = 'mobile-flashcards/ADD_CARD_TO_DECK_ERROR'
 
 export const NOTIFICATION_KEY = 'mobile-flashcards/NOTIFICATION_KEY'
+
+export const DELETE_DECK_REQUEST = 'mobile-flashcards/DELETE_DECK_REQUEST'
+export const DELETE_DECK_SUCCESS = 'mobile-flashcards/DELETE_DECK_SUCCESS'
+export const DELETE_DECK_ERROR = 'mobile-flashcards/DELETE_DECK_ERROR'

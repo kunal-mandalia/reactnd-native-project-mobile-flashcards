@@ -10,8 +10,9 @@ import { Button, Title, Space } from './Common'
 export const EmptyList = ({ navigation }) => (
   <View style={styles.emptyList}>
     <Title
-      text='Get started by creating a new deck to hold your flashcards and practice against'
+      text='Create a new flashcard deck to get started'
       size={18}
+      marginHorizontal='8%'
     />
     <Space />
     <Button
