@@ -44,4 +44,24 @@ describe(`reducer()`, () => {
       status: success
     })
   })
+
+  it(`${c.DELETE_DECK_SUCCESS} should return correct state`, () => {
+    const initialState = {
+      decks: {
+        Magic: {
+          title: 'Magic',
+          questions: [
+            {
+              question: 'Did David Blane levitate?',
+              answer: 'Of course'
+            }
+          ]
+        },
+      },
+      status: success      
+    }
+    const title = 'Magic'
+
+    expect(reducer(initialState, actions.deleteDeckSuccess(title))).toEqual({ decks: {}, status: success })
+  })
 })

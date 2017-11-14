@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Alert } from 'react-native'
 import CoreLayout from './Common/CoreLayout'
 import Button from './Common/Button'
 import Space from './Common/Space'
 import Title from './Common/Title'
 import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
+import { deleteDeck } from '../redux/actions'
 
 class IndividualDeckView extends Component {
   static navigationOptions = ({ navigation }) => ({ title: navigation.state.params.deckTitle || 'Deck' })  
@@ -15,6 +16,8 @@ class IndividualDeckView extends Component {
       deck: null,
       error: false,
     }
+    this.promptDeleteDeck = this.promptDeleteDeck.bind(this)
+    this.deleteDeck = this.deleteDeck.bind(this)
   }
 
   componentDidMount () {
@@ -37,6 +40,25 @@ class IndividualDeckView extends Component {
         this.setState({ error: true })
       }
     }
+  }
+
+  promptDeleteDeck () {
+    const { title } = this.props
+    Alert.alert(
+      'Delete Deck',
+      `Are you sure you want to delete the deck ${title}?`,
+      [
+        {text: 'Cancel', onPress: () => {}, style: 'cancel'},
+        {text: 'Delete', onPress: this.deleteDeck, style: 'destructive' },
+      ],
+      { cancelable: true }
+    )
+  }
+
+  deleteDeck () {
+    const { title, deleteDeck, navigation } = this.props
+    deleteDeck(title)
+    navigation.navigate('Home')
   }
 
   render () {
@@ -66,7 +88,7 @@ class IndividualDeckView extends Component {
                 btnStyle='quaternary'
                 width='80%'
                 title='Delete Deck'
-                onPress={() => { }}
+                onPress={this.promptDeleteDeck}
               />
             </View>
           )
@@ -85,6 +107,10 @@ const mapStateToProps = (state, ownProps) => ({
   ownProps: ownProps,
 })
 
+const mapDispatchToProps = (dispatch) => ({
+  deleteDeck: (title) => { dispatch(deleteDeck(title)) },
+})
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -94,4 +120,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(mapStateToProps)(IndividualDeckView)
+export default connect(mapStateToProps, mapDispatchToProps)(IndividualDeckView)

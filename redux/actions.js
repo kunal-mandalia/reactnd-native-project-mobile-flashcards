@@ -114,3 +114,28 @@ export const setLocalNotification = (notifications = Notifications,storage = Asy
     })
   }
 }
+
+export const deleteDeckRequest = (title) => ({ type: c.DELETE_DECK_REQUEST, title })
+export const deleteDeckSuccess = (title) => ({ type: c.DELETE_DECK_SUCCESS, title })
+export const deleteDeckError = (error) => ({ type: c.DELETE_DECK_ERROR, error })
+export const deleteDeck = (title, storage = AsyncStorage) => {
+  return (dispatch) => {
+    dispatch(deleteDeckRequest(title))
+    storage.getItem(c.ASYNC_STORAGE_DECKS_KEY)
+    .then((decks) => {
+      let modifiedDecks = JSON.parse(decks)
+      modifiedDecks[title] = undefined
+      delete modifiedDecks[title]
+      
+      return storage.setItem(c.ASYNC_STORAGE_DECKS_KEY, JSON.stringify(modifiedDecks))
+      .then(
+        response => dispatch(deleteDeckSuccess(title)),
+        error => dispatch(deleteDeckError(error))
+      )
+      .catch(error => dispatch(deleteDeckError(error)))
+    })
+    .catch((error) => {
+      dispatch(deleteDeckError(error))
+    })
+  }
+}
