@@ -1,5 +1,12 @@
 {
   "expo": {
-    "sdkVersion": "21.0.0"
+    "name": "Mobile Flashcards",
+    "slug": "mobile-flashcards-kvm",
+    "sdkVersion": "21.0.0",
+    "privacy": "public",
+    "icon": "./assets/mobile-flashcards-logo.png",
+    "loading": {
+      "icon": "./assets/mobile-flashcards-logo.png"
+    }
   }
 }
