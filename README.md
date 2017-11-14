@@ -30,4 +30,6 @@ Start the project
 ## License
 MIT
 
-<div style='text-align: center'><img style='max-width: 100px; height: auto' src='./assets/mobile-flashcards-logo.png' ></div>
+<p align="center">
+  <img src="./assets/mobile-flashcards-logo.png" alt="MarketInvoice Logo" width="240px"/>
+</p>
