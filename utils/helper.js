@@ -42,3 +42,5 @@ export const sampleData = {
     }
   }
 }
+
+export const pluralise = (count, noun) => count === 1 ? noun : `${noun}s`

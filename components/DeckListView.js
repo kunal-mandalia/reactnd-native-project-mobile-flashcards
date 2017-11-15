@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { getDecks } from '../redux/actions'
 import { setLocalNotification } from '../redux/actions'
 import { Button, Title, Space } from './Common'
+import { pluralise } from '../utils/helper'
 
 export const EmptyList = ({ navigation }) => (
   <View style={styles.emptyList}>
@@ -45,7 +46,7 @@ class DeckListView extends Component {
         onPress={() => this.props.navigation.navigate('IndividualDeckView', { deckTitle: item.title })}
       >
         <Text style={styles.title}>{item.title}</Text>
-        {<Text style={styles.subtitle}>{item.questions ? item.questions.length : '0'} cards</Text>}
+        {<Text style={styles.subtitle}>{item.questions.length} {pluralise(item.questions.length, 'card')}</Text>}
       </TouchableOpacity>
     </View>
   )
