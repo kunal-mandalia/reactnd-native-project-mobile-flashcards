@@ -20,8 +20,8 @@ Download and install this project
 
 Start the project
 - `yarn start` and use the Expo app to open this project without having to deploy to the app/play store)
-- `yarn ios` to run your app in ios simulator
-- `yarn android` to run your app in an android simulator
+- `yarn ios` to run this app in ios simulator (tested) 
+- `yarn android` to run this app in an android simulator
 
 ## Run tests
 - `yarn test` runs jest tests in watch mode
